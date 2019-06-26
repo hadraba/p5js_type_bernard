@@ -86,12 +86,12 @@ class Word {
       let sw = windowWidth;
       let sh = Math.round(this.txtbox.h / lines);
 
+      //TODO: FIX when pixel density is different than 1 //
+
       //line lenght in the pixels array
       let line = this.temp.width * 4 * pixelDensity();
       //find start and end
-      let start = line * sy;
-      let end = start + line * sh * pixelDensity();
-
+      let start = line * sy * pixelDensity();
       let img = createImage(this.temp.width, sh);
 
       img.loadPixels();
