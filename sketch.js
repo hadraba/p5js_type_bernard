@@ -101,12 +101,11 @@ class Word {
       img.updatePixels();
 
       this.stripes.push(img);
-
-      //this.stripes.push(this.temp.get(sx, sy, sw, sh))
     }
   }
 
   move(tints) {
+    let test = createImage(windowWidth, windowHeight);
     for (let i = 0; i < lines; i++) {
       let dx = Math.round(
         map(i, 0, lines, 2, -2) *
@@ -138,8 +137,36 @@ class Word {
               )
           )
         );
-      image(this.stripes[i], dx, dy);
+      let src = this.stripes[i].get(
+        0,
+        0,
+        windowWidth,
+        Math.round(this.txtbox.h / lines)
+      );
+      test.blend(
+        src,
+        0,
+        0,
+        windowWidth,
+        windowHeight,
+        dx,
+        dy,
+        windowWidth,
+        windowHeight,
+        ADD
+      );
     }
+    if (tints != 255) {
+      test.loadPixels();
+      for (let i = 3; i < test.pixels.length; i++) {
+        if (test.pixels[i] > 0) {
+          test.pixels[i] = tints;
+        }
+      }
+      test.updatePixels();
+    }
+
+    image(test, 0, 0);
   }
 
   drawText(name) {
