@@ -1,17 +1,16 @@
-let font = "Acumin Pro";
+let font = "Helvetica";
 let initSize = 10;
 let txt = "dopici"; //delete soon
-let names = ["generative", "visual", "design", "identity"];
+let names = ["generative", "visual", "design", "identity", "style"];
 //let names = ["generative"];
 let paddings = 0.1; //in percents
 let dictionary;
 
-const lines = 50;
+const lines = 30;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   pixelDensity(1);
-
   dictionary = new Dictionary(names);
 }
 
@@ -42,7 +41,7 @@ class Dictionary {
 
   show() {
     if (!this.switching) {
-      this.words[this.active].move(255);
+      this.words[this.active].move();
     } else {
       this.switchTransition();
     }
@@ -54,13 +53,14 @@ class Dictionary {
 
   switchTransition() {
     let nextActive = (this.active + 1) % this.names.length;
-    if (this.transFrame < 30) {
-      this.words[this.active].move(map(this.transFrame, 0, 30, 255, 0));
-      this.words[nextActive].move(map(this.transFrame, 0, 30, 0, 255));
+    let framesToSwitch = 0;
+    if (this.transFrame < framesToSwitch) {
+      this.words[this.active].move();
+      this.words[nextActive].move();
       this.transFrame++;
     } else {
       this.active = nextActive;
-      this.words[this.active].move(255);
+      this.words[this.active].move();
       this.transFrame = 0;
       this.switching = false;
     }
@@ -143,30 +143,8 @@ class Word {
         windowWidth,
         Math.round(this.txtbox.h / lines)
       );
-      test.blend(
-        src,
-        0,
-        0,
-        windowWidth,
-        windowHeight,
-        dx,
-        dy,
-        windowWidth,
-        windowHeight,
-        ADD
-      );
+      image(src, dx, dy);
     }
-    if (tints != 255) {
-      test.loadPixels();
-      for (let i = 3; i < test.pixels.length; i++) {
-        if (test.pixels[i] > 0) {
-          test.pixels[i] = tints;
-        }
-      }
-      test.updatePixels();
-    }
-
-    image(test, 0, 0);
   }
 
   drawText(name) {
