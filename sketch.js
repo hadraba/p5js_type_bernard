@@ -16,7 +16,6 @@ function setup() {
 
 function draw() {
   clear();
-
   dictionary.show();
 
   let fps = frameRate();
@@ -104,7 +103,7 @@ class Word {
     }
   }
 
-  move(tints) {
+  move() {
     let test = createImage(windowWidth, windowHeight);
     for (let i = 0; i < lines; i++) {
       let dx = Math.round(
@@ -113,10 +112,13 @@ class Word {
             mouseX,
             0,
             windowWidth,
-            this.txtbox.w / 50 + i * 5,
-            -this.txtbox.w / 50 - i * 5
+            ((this.txtbox.w / 50) * i) / lines,
+            ((-this.txtbox.w / 50) * i) / lines
           )
       );
+      if (mouseX === 0 && mouseY === 0) {
+        dx = 0;
+      }
       let dy =
         Math.round(
           this.txtbox.y - this.txtbox.h / 2 + i * (this.txtbox.h / lines)
